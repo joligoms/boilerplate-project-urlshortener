@@ -4,21 +4,21 @@ async function validURL (req, _, next) {
     const { url } = req.body;
     console.log(url);
 
-    if (!url) return next(createError('invalid url', 400))
+    if (!url) return next(createError('invalid url'))
 
     let urlObject;
 
     try {
         urlObject = new URL(url);
     } catch (err) {
-        return next(createError('invalid url', 400));
+        return next(createError('invalid url'));
     }
 
     const { protocol, hostname } = urlObject;
     console.log(protocol);
 
     if (protocol !== 'http:' && protocol !== 'https:') {
-        return next(createError('invalid url', 400));
+        return next(createError('invalid url'));
     }
 
     try {
@@ -26,7 +26,7 @@ async function validURL (req, _, next) {
         console.log(`no errors for ${url}`);
         next();
     } catch (err) {
-        next(createError('invalid url', 400));
+        next(createError('invalid url'));
     }
 }
 
@@ -42,7 +42,7 @@ function lookup(hostname) {
     });
 }
 
-function createError(message, statusCode) {
+function createError(message, statusCode = 200) {
   const error = new Error(message);
   error.statusCode = statusCode;
   return error;
